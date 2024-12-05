@@ -3,16 +3,17 @@ defmodule TodoApp.Todos.Todo do
   import Ecto.Changeset
 
   schema "todos" do
-    field :title, :string
-    field :completed, :boolean, default: false
-    field :scheduled_at, :utc_datetime
+    field(:content, :string)
+    field(:completed, :boolean, default: false)
+    field(:scheduled_at, :utc_datetime)
+    field(:deleted, :boolean, default: false)
 
     timestamps()
   end
 
   def changeset(todo, attrs) do
     todo
-    |> cast(attrs, [:title, :completed, :scheduled_at])
-    |> validate_required([:title])
+    |> cast(attrs, [:content, :completed, :scheduled_at, :deleted])
+    |> validate_required([:content])
   end
 end

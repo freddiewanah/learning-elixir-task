@@ -60,7 +60,8 @@ defmodule TodoApp.MixProject do
       {:absinthe, "~> 1.7"},
       {:absinthe_plug, "~> 1.5"},
       {:oban, "~> 2.15"},
-      {:httpoison, "~> 2.0"}
+      {:httpoison, "~> 2.0"},
+      {:cors_plug, "~> 3.0"}
     ]
   end
 

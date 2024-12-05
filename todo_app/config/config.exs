@@ -11,6 +11,18 @@ config :todo_app,
   ecto_repos: [TodoApp.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+config :todo_app, Oban,
+  repo: TodoApp.Repo,
+  queues: [default: 10],
+  plugins: [
+    {Oban.Plugins.Pruner, max_age: 60 * 60 * 24 * 3},
+    {Oban.Plugins.Cron,
+     crontab: [
+       {"0 0 * * *", TodoApp.Workers.FetchWeather},
+       {"* * * * *", TodoApp.Workers.CompleteTodo}
+     ]}
+  ]
+
 # Configures the endpoint
 config :todo_app, TodoAppWeb.Endpoint,
   url: [host: "localhost"],

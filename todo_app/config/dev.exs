@@ -23,10 +23,18 @@ config :todo_app, TodoAppWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
+  live_reload: [
+    patterns: [
+      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"lib/todo_app_web/(controllers|live|components)/.*(ex|heex)$"
+    ]
+  ],
   secret_key_base: "3yrF6l/CShfWUNKHSZVNuU/YgmaVPC4/xXJ3RKgsuQLiGVdIrOHB1aE9uCwnZLOK",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:todo_app, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:todo_app, ~w(--watch)]}
+    yarn: [
+      "dev",
+      cd: Path.expand("../assets", __DIR__)
+    ]
   ]
 
 # ## SSL Support

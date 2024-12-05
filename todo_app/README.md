@@ -1,18 +1,45 @@
-# TodoApp
+# Todo App
 
-To start your Phoenix server:
+A full-stack todo application with Phoenix backend (GraphQL) and Next.js frontend.
 
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+## Prerequisites
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+- Elixir 1.14 or later
+- Phoenix 1.7.15
+- PostgreSQL
+- Node.js 20+ (for Next.js frontend)
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+## Start the application
 
-## Learn more
+Start the application
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+```bash
+mix phx.server
+```
+
+This will start both:
+
+- Backend on [`localhost:4000`](http://localhost:4000)
+- Frontend on [`localhost:3000`](http://localhost:3000)
+
+## API Endpoints
+
+- **GraphQL Playground**: [`localhost:4000/api/graphql`](http://localhost:4000/api/graphql)
+- **GraphQL API Endpoint**: `http://localhost:4000/api/graphql`
+
+## Development
+
+- Start interactive console: `iex -S mix`
+- Start development server: `mix phx.server`
+
+## Environment Variables
+
+Backend defaults:
+
+- Username: "postgres"
+- Password: "postgres"
+- Database: "todo_app_dev"
+
+## CORS Configuration
+
+The backend is already configured to accept requests from `localhost:3000` for the Next.js frontend.

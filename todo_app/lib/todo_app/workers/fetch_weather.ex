@@ -19,6 +19,7 @@ defmodule TodoApp.Workers.FetchWeather do
   @impl Oban.Worker
   def perform(_args) do
     url = "#{@base_url}?#{URI.encode_query(@params)}"
+
     case HTTPoison.get(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         case Jason.decode(body) do
@@ -33,7 +34,7 @@ defmodule TodoApp.Workers.FetchWeather do
             |> WeatherDay.changeset(weather_attrs)
             |> Repo.insert()
 
-          {:error, error} ->
+          {:error, _} ->
             {:error, "Failed to decode response"}
         end
 
