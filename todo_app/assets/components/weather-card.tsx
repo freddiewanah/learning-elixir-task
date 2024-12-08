@@ -6,7 +6,15 @@ interface WeatherCardProps {
 }
 
 export default function WeatherCard({ weather }: WeatherCardProps) {
-  if (!weather) return null;
+  if (!weather) {
+    return (
+      <div className="p-2 rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow">
+        <div className="flex flex-col items-center space-y-2">
+          <p className="text-gray-400">Weather data unavailable</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-2 rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow">

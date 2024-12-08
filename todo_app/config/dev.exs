@@ -29,13 +29,7 @@ config :todo_app, TodoAppWeb.Endpoint,
       ~r"lib/todo_app_web/(controllers|live|components)/.*(ex|heex)$"
     ]
   ],
-  secret_key_base: "3yrF6l/CShfWUNKHSZVNuU/YgmaVPC4/xXJ3RKgsuQLiGVdIrOHB1aE9uCwnZLOK",
-  watchers: [
-    yarn: [
-      "dev",
-      cd: Path.expand("../assets", __DIR__)
-    ]
-  ]
+  secret_key_base: "3yrF6l/CShfWUNKHSZVNuU/YgmaVPC4/xXJ3RKgsuQLiGVdIrOHB1aE9uCwnZLOK"
 
 # ## SSL Support
 #

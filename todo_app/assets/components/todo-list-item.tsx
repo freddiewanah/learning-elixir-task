@@ -7,7 +7,7 @@ import {
   UPDATE_TODO,
   UPDATE_TODO_SCHEDULED_AT,
 } from "../graphql/queries";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 export default function TodoListItem({
   id,
@@ -15,12 +15,19 @@ export default function TodoListItem({
   completed,
   scheduledAt,
 }: TodoItem) {
-  console.log(scheduledAt);
+  const toLocalDateTimeString = (date: string) => {
+    return new Date(
+      new Date(date).getTime() - new Date(date).getTimezoneOffset() * 60000
+    )
+      .toISOString()
+      .slice(0, 16);
+  };
+
+  const scheduledAtLocal = toLocalDateTimeString(scheduledAt);
   const [text, setText] = useState(content);
   const [isEditingDate, setIsEditingDate] = useState(false);
-  const [dateValue, setDateValue] = useState(() => {
-    return scheduledAt.slice(0, 16);
-  });
+  const [dateValue, setDateValue] = useState(scheduledAtLocal);
+
   const [updateItem] = useMutation(UPDATE_TODO);
   const [updateItemScheduledAt] = useMutation(UPDATE_TODO_SCHEDULED_AT);
   const [deleteTodoMutation] = useMutation(DELETE_TODO, {
@@ -57,6 +64,32 @@ export default function TodoListItem({
     },
   });
 
+  useEffect(() => {
+    if (!isEditingDate) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const dateInput = document.querySelector('input[type="datetime-local"]');
+
+      // If clicked element is the date input, don't do anything
+      if (dateInput && (target === dateInput || dateInput.contains(target))) {
+        return;
+      }
+      const curValue = (dateInput as HTMLInputElement)?.value || dateValue;
+      setDateValue(curValue);
+
+      if (curValue !== scheduledAtLocal) {
+        updateScheduledAt(curValue);
+      }
+      setIsEditingDate(false);
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isEditingDate]);
+
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newText = e.target.value;
     setText(newText);
@@ -92,14 +125,24 @@ export default function TodoListItem({
   };
 
   const onDateChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newDate = e.target.value;
-    setDateValue(newDate);
+    setDateValue(e.target.value);
   };
 
   const onDateBlur = () => {
+    updateScheduledAt(dateValue);
+  };
+
+  const updateScheduledAt = (inputDate: string) => {
+    if (inputDate === scheduledAtLocal) return;
+
+    const localDate = new Date(inputDate);
+    updateItemScheduledAt({
+      variables: {
+        id,
+        scheduledAt: localDate.toISOString(),
+      },
+    });
     setIsEditingDate(false);
-    if (dateValue === scheduledAt) return;
-    updateItemScheduledAt({ variables: { id, scheduledAt: dateValue } });
   };
 
   return (
@@ -148,7 +191,6 @@ export default function TodoListItem({
                   day: "numeric",
                   hour: "2-digit",
                   minute: "2-digit",
-                  timeZone: "UTC",
                 })}
               </span>
             )}

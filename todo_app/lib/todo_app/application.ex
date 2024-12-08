@@ -16,7 +16,8 @@ defmodule TodoApp.Application do
       # Start a worker by calling: TodoApp.Worker.start_link(arg)
       # {TodoApp.Worker, arg},
       # Start to serve requests, typically the last entry
-      TodoAppWeb.Endpoint
+      TodoAppWeb.Endpoint,
+      {Task, fn -> TodoApp.Workers.FetchWeather.perform(%{}) end}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

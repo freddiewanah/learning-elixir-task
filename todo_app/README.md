@@ -9,12 +9,19 @@ A full-stack todo application with Phoenix backend (GraphQL) and Next.js fronten
 - PostgreSQL
 - Node.js 20+ (for Next.js frontend)
 
+## Prepare the database
+
+```bash
+mix ecto.create
+mix ecto.migrate
+```
+
 ## Start the application
 
 Start the application
 
 ```bash
-mix phx.server
+./start_dev.sh
 ```
 
 This will start both:
@@ -26,11 +33,6 @@ This will start both:
 
 - **GraphQL Playground**: [`localhost:4000/api/graphql`](http://localhost:4000/api/graphql)
 - **GraphQL API Endpoint**: `http://localhost:4000/api/graphql`
-
-## Development
-
-- Start interactive console: `iex -S mix`
-- Start development server: `mix phx.server`
 
 ## Environment Variables
 
